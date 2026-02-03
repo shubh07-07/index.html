@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Shruti ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff0f3;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(255, 75, 110, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+            border: 2px solid #ff4b6e;
+        }
+
+        h1 { color: #ff4b6e; font-size: 2rem; margin-bottom: 10px; }
+        p { color: #555; font-size: 1.1rem; line-height: 1.5; }
+
+        .btn-container {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 60px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #ff4b6e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 75, 110, 0.4);
+        }
+
+        #noBtn {
+            background-color: #f0f0f0;
+            color: #888;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff4b6e;
+            opacity: 0.5;
+            pointer-events: none;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) scale(1); opacity: 1; }
+            to { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="romanticSong">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card" id="mainCard">
+        <h1 id="title">Shruti... 🌸</h1>
+        <p id="message">You make every day better. So I have to ask... Will you be my Valentine?</p>
+        
+        <div class="btn-container">
+            <button id="yesBtn">Yes, I will! ❤️</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const title = document.getElementById('title');
+        const message = document.getElementById('message');
+        const audio = document.getElementById('romanticSong');
+        let noScale = 1;
+
+        // Move and shrink the 'No' button
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            
+            noScale -= 0.1;
+            if (noScale < 0.3) noScale = 0.3; 
+            noBtn.style.transform = `scale(${noScale})`;
+        });
+
+        // Yes button click: Music + Confetti + Change Text
+        yesBtn.addEventListener('click', () => {
+            // Start the music
+            audio.play().catch(e => console.log("Audio failed to play. Check if music.mp3 is in the folder."));
+
+            title.innerHTML = "Yay! ❤️";
+            message.innerHTML = "You just made me the happiest guy, Shruti! I've got the best day planned for us.";
+            document.querySelector('.btn-container').style.display = 'none';
+
+            // Confetti rain
+            var duration = 10 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff4b6e', '#ffffff', '#ff9a9e']
+              });
+              confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff4b6e', '#ffffff', '#ff9a9e']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        });
+
+        // Background Hearts
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'floating-heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }, 300);
+    </script>
+</body>
+</html>
